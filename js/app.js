@@ -20,15 +20,32 @@ const displayWeather = async city=>{
     // ** Where to display
     const displayWeatherContainer = document.getElementById('temparature-display');
     // ** dynamic display of city name
-    const cityContainer = document.getElementById('city-name')
+    const cityContainer = document.getElementById('city-name');
+    // ** weather condition display
+    const weatherConditionContainer = document.getElementById('weather-condition');
     // ** load temparature data
     const data = await dataLoader(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`);
-    const {main:{temp}} = data;
+    console.log(data)
+    const {main:{temp},weather} = data;
+
+    weather.forEach(weatherPerCity => {
+        const {main} = weatherPerCity;
+        weatherConditionContainer.innerText = main;
+    })
     
     displayWeatherContainer.innerText = temp;
-    cityContainer.innerText = city
+    cityContainer.innerText = city;
     
    
 };
+
+// ** Search Functionality
+
+document.getElementById('search').addEventListener('click',()=>{
+    // ** search input
+    const searchInputValue = document.getElementById('search-input').value
+    displayWeather(searchInputValue);
+
+})
 
 displayWeather('London');
